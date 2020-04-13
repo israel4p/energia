@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Calculadora Energia</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/lib/bulma.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/lib/font-awesome.min.css') }}">
+</head>
+
+<body>
+    <section class="hero is-dark">
+        <div class="hero-body">
+            <a href="{{ url_for('logout') }}" class="button is-dark is-pulled-right">
+                <i class="fa fa-sign-out"></i>
+            </a>
+            <div class="container">
+                <h1 class="title has-text-centered">Calculadora de Energia</h1>
+                <h2 class="subtitle"></h2>
+            </div>
+        </div>
+    </section>
+    <br>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3">
+                <article class="message is-dark">
+                    <div class="message-body">
+                        <div class="title has-text-centered is-4">
+                            Calcular
+                        </div>
+                        <hr>
+                        <form name="energia" action="" method="post">
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.kwatual(class_="input") }}
+                                    {% if form.kwatual.errors %}
+                                        {% for error in form.kwatual.errors %}
+                                            <p class="has-text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.dataleitura(class_="input") }}
+                                    {% if form.dataleitura.errors %}
+                                        {% for error in form.dataleitura.errors %}
+                                            <p class="has-text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.valorkwh(class_="input") }}
+                                    {% if form.valorkwh.errors %}
+                                        {% for error in form.valorkwh.errors %}
+                                            <p class="has-text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <button type="submit" class="button is-dark is-fullwidth submit">
+                                <i class="fa fa-plus">&nbsp;</i>
+                                Salvar
+                            </button>
+                        </form>
+                    </div>
+                </article>
+            </div>
+
+            <div class="column is-9">
+                {% if confirm %}
+                    <div class="message is-danger">
+                        <div class="message-body">
+                            <div class="columns">
+                                <div class="column is-8">
+                                    <h1 class="title has-text-danger is-4">Deseja apagar a leitura?</h1>
+                                </div>
+                                <div class="column is-4">
+                                    <div class="is-pulled-right">
+                                        <a href="{{ url_for('energia', delete=confirm) }}" class="button is-danger">Apagar</a>
+                                        <a href="{{ url_for('energia') }}" class="button">Cancelar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="notification is-success">
+                                <button class="delete"></button>
+                                <h1 class="title is-4">{{ message }}</h1>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                        <tr>
+                            <th>kWh Atual</th>
+                            <th>Data de Leitura</th>
+                            <th>Valor kW</th>
+                            <th>Total kWh</th>
+                            <th>Total a Pagar</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for energia in energias %}
+                            <tr>
+                                <td>{{ energia.kwAtual }}</td>
+                                <td>{{ energia.data }}</td>
+                                <td>{{ energia.kwValor }}</td>
+                                <td>{{ energia.kwTotal }}</td>
+                                <td>R$ {{ energia.totalPagar }}</td>
+                                <td>
+                                    <a href="{{ url_for('energia', confirm=energia.id) }}" class="button is-white is-small">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/lib/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/jquery.mask.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/energia.min.js') }}"></script>
+</body>
+</html>

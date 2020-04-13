@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lan="pt-br">
+    <head>
+        <meta chartet="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Login Energia</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/bulma.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.min.css') }}">
+
+    </head>
+
+    <body class="container">
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <article class="message is-dark">
+                    <div class="message-body">
+                        <h1 class="title is-3 has-text-centered">Energia</h1>
+                        <hr>
+                        <form name="login" action="" method="post">
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.username(class_='input') }}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.password(class_='input') }}
+                                </div>
+                            </div>
+
+                            <hr>
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="notification is-danger">
+                                <button type="button" class="delete"></button>
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <button type="submit" class="button is-dark is-fullwidth submit">Acessar</button>
+                        </form>
+                    </div>
+                </article>
+            </div>
+            <div class="column is-4"></div>
+        </div>
+
+        <script src="{{ url_for('static', filename='js/lib/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/lib/jquery.mask.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/energia.min.js') }}"></script>
+    </body>
+</html>
